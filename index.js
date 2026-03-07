@@ -23,6 +23,7 @@ document.getElementById('signin-btn').addEventListener('click', function(){
 
 
 //------------------------------------------------------------------------------------
+
 const totalIssues = document.getElementById('total-issue');
 
 
@@ -69,7 +70,7 @@ lodAllIssues();
 
         const bgColor = colorPriority[issue.priority] ;
         const image = imagePriority[issue.priority];
-        const borderColor = cardBorder[issue.priority];
+        const borderColor = cardBorder[issue.priority];         
 
 
    const card = document.createElement('div');
@@ -104,6 +105,8 @@ lodAllIssues();
     const openBtn = document.getElementById('open-btn');
     const closedBtn = document.getElementById('closed-btn');
     const cardSection = document.getElementById('card-section');
+    const closedCardSection = document.getElementById('closed-section');
+    const openCardSection = document.getElementById('open-section');
 
 
 
@@ -119,6 +122,7 @@ document.getElementById('open-btn').addEventListener('click', function(){
     allBtn.classList.remove('btn-primary'); 
    closedBtn.classList.remove('bg-btn'); 
    cardSection.classList.add('hidden');
+   openCardSection.classList.remove('hidden');
 })
 
 document.getElementById('closed-btn').addEventListener('click', function(){    
@@ -126,7 +130,161 @@ document.getElementById('closed-btn').addEventListener('click', function(){
     allBtn.classList.remove('btn-primary'); 
     openBtn.classList.remove('bg-btn');     
    cardSection.classList.add('hidden');
-})
+   closedCardSection.classList.remove('hidden');
+
+});
 
 
 
+//-----------------------------------------------------------------------------
+
+const lodIssues = () => {
+fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+.then((res) => res.json())
+.then((data) => closedSection(data.data)
+)
+}
+
+lodIssues();
+
+
+function closedSection(closedIssues){ console.log(closedIssues);
+
+    const issues = closedIssues.filter(issue => issue.priority === 'low');
+    console.log(issues);
+    
+   const closedCard = document.getElementById('closed-card');
+   closedCard.innerText = '';
+
+   issues.forEach(issue => {
+
+const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";        
+        const hideBtn = showBtn ? "" : "display-hide";
+
+        const colorPriority = {
+            "high": "bg-c",
+            "medium": "bg-b",
+            "low": "bg-a",
+        };
+
+       const imagePriority = {
+        "high": "./assets/Open-Status.png",
+        "medium": "./assets/Open-Status.png",
+         "low": "./assets/Closed- Status .png",
+       } ;
+
+       const cardBorder = {
+        "high": "border-a",
+        "medium": "border-b",
+         "low": "border-c",
+       }
+
+        const bgColor = colorPriority[issue.priority] ;
+        const image = imagePriority[issue.priority];
+        const borderColor = cardBorder[issue.priority];     
+
+
+    const createCard = document.createElement('div');
+     createCard.className = 'card bg-base-100 shadow-sm p-6';
+     createCard.innerHTML = `
+                     <div class="flex justify-between">
+                       <img src="${image}" alt="${issue.priority}">
+                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
+                    </div>
+
+                    <h1>${issue.title}</h1>
+                    <p>${issue.description}</p>
+
+                    <div class="flex ">
+                        <button class="btn btn-soft btn-secondary rounded-2xl">${issue.labels[0]}</button>
+                        <button class="btn btn-soft btn-warning rounded-2xl object-cover ${hideBtn}"> ${issue.labels[1] || "No Action"}</button>
+
+
+                    </div>
+                    <hr>
+                    <p>#1 By John_doe</p>
+                    <p>1/15/2025</p> 
+     `;
+
+     closedCard.appendChild(createCard);
+
+   });
+}
+
+
+
+//-----------------------------------------------------
+
+
+const lodOpenIssues = () => {
+fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+.then((res) => res.json())
+.then((data) => openSection(data.data)
+)
+}
+
+lodOpenIssues();
+
+
+function openSection(openIssues){ console.log(openIssues);
+
+    const issues = openIssues.filter(issue => issue.priority === 'medium' || issue.priority === 'high');
+    console.log(issues);
+    
+   const openCard = document.getElementById('open-card');
+   openCard.innerText = '';
+
+   issues.forEach(issue => {
+
+const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";        
+        const hideBtn = showBtn ? "" : "display-hide";
+
+        const colorPriority = {
+            "high": "bg-c",
+            "medium": "bg-b",
+            "low": "bg-a",
+        };
+
+       const imagePriority = {
+        "high": "./assets/Open-Status.png",
+        "medium": "./assets/Open-Status.png",
+         "low": "./assets/Closed- Status .png",
+       } ;
+
+       const cardBorder = {
+        "high": "border-a",
+        "medium": "border-b",
+         "low": "border-c",
+       }
+
+        const bgColor = colorPriority[issue.priority] ;
+        const image = imagePriority[issue.priority];
+        const borderColor = cardBorder[issue.priority];     
+
+
+    const createCard = document.createElement('div');
+     createCard.className = 'card bg-base-100 shadow-sm p-6';
+     createCard.innerHTML = `
+                     <div class="flex justify-between">
+                       <img src="${image}" alt="${issue.priority}">
+                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
+                    </div>
+
+                    <h1>${issue.title}</h1>
+                    <p>${issue.description}</p>
+
+                    <div class="flex ">
+                        <button class="btn btn-soft btn-secondary rounded-2xl">${issue.labels[0]}</button>
+                        <button class="btn btn-soft btn-warning rounded-2xl object-cover ${hideBtn}"> ${issue.labels[1] || "No Action"}</button>
+
+
+                    </div>
+                    <hr>
+                    <p>#1 By John_doe</p>
+                    <p>1/15/2025</p> 
+     `;
+
+     openCard.appendChild(createCard);
+
+   });
+}

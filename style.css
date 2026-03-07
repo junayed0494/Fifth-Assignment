@@ -1,3 +1,33 @@
 body{
     font-family: "Poppins", sans-serif;
+    background-color: #e8f2fc;
+}
+
+.display-hide {
+    display: none !important;
+}
+
+.bg-a{
+    background-color: #eeeff2;
+    color: #adb3bc;
+}
+
+.bg-b{
+    background-color: #fff6d1;
+    color:#f5a011;
+}
+
+.bg-c{
+    background-color: #feecec;
+    color:#f26d6d ;
+}
+
+.border-a{
+    border-top:4px solid #16a34a ;
+}
+.border-b{
+    border-top:4px solid #16a34a ;
+}
+.border-c{
+    border-top:4px solid #9333ea;
 }

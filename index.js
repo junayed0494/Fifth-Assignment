@@ -23,3 +23,79 @@ document.getElementById('signin-btn').addEventListener('click', function(){
 
 
 //------------------------------------------------------------------------------------
+const totalIssues = document.getElementById('total-issue');
+
+
+
+const lodAllIssues = () => {
+fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+.then((res) => res.json())
+.then((data) => displayAllIssues(data.data)
+)
+}
+
+lodAllIssues();
+
+
+
+
+ const displayAllIssues = (issues) => {
+    
+    const cardContainer = document.getElementById('card-container');
+    cardContainer.innerHTML = '';
+
+  issues.forEach((issue) => { 
+
+    const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";        
+        const hideBtn = showBtn ? "" : "display-hide";
+
+        const colorPriority = {
+            "high": "bg-c",
+            "medium": "bg-b",
+            "low": "bg-a",
+        };
+
+       const imagePriority = {
+        "high": "./assets/Open-Status.png",
+        "medium": "./assets/Open-Status.png",
+         "low": "./assets/Closed- Status .png",
+       } ;
+
+       const cardBorder = {
+        "high": "border-a",
+        "medium": "border-b",
+         "low": "border-c",
+       }
+
+        const bgColor = colorPriority[issue.priority] || "bg-secondary";
+        const image = imagePriority[issue.priority] || "images/default.png";
+        const borderColor = cardBorder[issue.priority] || "border-a";
+
+
+   const card = document.createElement('div');
+   card.className = `card bg-base-100 shadow-sm p-6 ${borderColor}`;
+   card.innerHTML = `
+                    <div class="flex justify-between">
+                       <img src="${image}" alt="${issue.priority}">
+                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
+                    </div>
+
+                    <h1>${issue.title}</h1>
+                    <p>${issue.description}</p>
+
+                    <div class="flex ">
+                        <button class="btn btn-soft btn-secondary rounded-2xl">${issue.labels[0]}</button>
+                        <button class="btn btn-soft btn-warning rounded-2xl object-cover ${hideBtn}"> ${issue.labels[1] || "No Action"}</button>
+
+
+                    </div>
+                    <hr>
+                    <p>#1 By John_doe</p>
+                    <p>1/15/2025</p>    
+                 `;    
+   
+      cardContainer.appendChild(card);
+      totalIssues.innerText = issues.length;
+ })}
+
+//------------------------------------------------------------------

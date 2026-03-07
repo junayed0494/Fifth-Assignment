@@ -31,3 +31,8 @@ body{
 .border-c{
     border-top:4px solid #9333ea;
 }
+
+.bg-btn{
+    background-color: #4a00ff;
+    color:white;
+}

@@ -67,9 +67,9 @@ lodAllIssues();
          "low": "border-c",
        }
 
-        const bgColor = colorPriority[issue.priority] || "bg-secondary";
-        const image = imagePriority[issue.priority] || "images/default.png";
-        const borderColor = cardBorder[issue.priority] || "border-a";
+        const bgColor = colorPriority[issue.priority] ;
+        const image = imagePriority[issue.priority];
+        const borderColor = cardBorder[issue.priority];
 
 
    const card = document.createElement('div');
@@ -99,3 +99,34 @@ lodAllIssues();
  })}
 
 //------------------------------------------------------------------
+
+    const allBtn = document.getElementById('all-btn');
+    const openBtn = document.getElementById('open-btn');
+    const closedBtn = document.getElementById('closed-btn');
+    const cardSection = document.getElementById('card-section');
+
+
+
+document.getElementById('all-btn').addEventListener('click', function(){ 
+    allBtn.classList.add('btn-primary'); 
+    openBtn.classList.remove('bg-btn');   
+    closedBtn.classList.remove('bg-btn');    
+   cardSection.classList.remove('hidden'); 
+})
+
+document.getElementById('open-btn').addEventListener('click', function(){    
+    openBtn.classList.add('bg-btn');
+    allBtn.classList.remove('btn-primary'); 
+   closedBtn.classList.remove('bg-btn'); 
+   cardSection.classList.add('hidden');
+})
+
+document.getElementById('closed-btn').addEventListener('click', function(){    
+    closedBtn.classList.add('bg-btn');
+    allBtn.classList.remove('btn-primary'); 
+    openBtn.classList.remove('bg-btn');     
+   cardSection.classList.add('hidden');
+})
+
+
+

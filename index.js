@@ -67,7 +67,7 @@ lodAllIssues();
    const card = document.createElement('div');
    card.className = `card bg-base-100 shadow-sm p-6 space-y-4  ${borderColor}`;
    card.innerHTML = `
-                    <div class="flex justify-between">
+                    <div class="flex justify-between" onclick="showModal(${issue.id})">
                        <img src="${image}" alt="${issue.priority}">
                        <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
                     </div>
@@ -132,6 +132,7 @@ document.getElementById('closed-btn').addEventListener('click', function(){
 
 
 //-----------------------------------------------------------------------------
+
 const closedIssue = document.getElementById('closed-issue');
 
 
@@ -185,7 +186,7 @@ const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";
     const createCard = document.createElement('div');
      createCard.className = `card bg-base-100 shadow-sm p-6 space-y-4 ${borderColor}`;
      createCard.innerHTML = `
-                     <div class="flex justify-between" onclick="lodLabelWord(${issue.id})">
+                     <div class="flex justify-between" onclick="showModal(${issue.id})">
                        <img src="${image}" alt="${issue.priority}">
                        <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
                     </div>
@@ -267,7 +268,7 @@ const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";
     const createCard = document.createElement('div');
      createCard.className = `card bg-base-100 shadow-sm p-6 space-y-4 ${borderColor}`;
      createCard.innerHTML = `
-                     <div class="flex justify-between" showModal(${openIssues.id})>
+                     <div class="flex justify-between" onclick="showModal(${issue.id})">
                        <img src="${image}" alt="${issue.priority}">
                        <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
                     </div>
@@ -293,5 +294,78 @@ const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";
 
    });
 }
+
+
+
+const showModal = (id) => {
+const link = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
+fetch(link)
+.then((res) => res.json())
+.then((data) => displayModal(data.data));
+};
+
+
+
+const displayModal = (modalData) => { console.log(modalData);
+    const cardContainer = document.getElementById('modal-box');
+    cardContainer.innerHTML = '';
+ 
+    const showBtn = modalData.labels[1] && modalData.labels[1].trim() !== "";        
+        const hideBtn = showBtn ? "" : "display-hide";
+        const colorPriority = {
+            "high": "bg-c",
+            "medium": "bg-b",
+            "low": "bg-a", };
+       const imagePriority = {
+        "high": "./assets/Open-Status.png",
+        "medium": "./assets/Open-Status.png",
+         "low": "./assets/Closed- Status .png",
+       } ;
+       const cardBorder = {
+        "high": "border-a",
+        "medium": "border-b",
+         "low": "border-c",
+       };
+        const bgColor = colorPriority[modalData.priority] ;
+        const image = imagePriority[modalData.priority];
+        const borderColor = cardBorder[modalData.priority]; 
+        cardContainer.classList = `card bg-base-100 w-96 shadow-sm p-6 space-y-4 ${borderColor}`;
+    
+
+   const card = document.createElement('div');   
+   card.innerHTML = `
+                    <div class="flex justify-between">
+                       <img src="${image}" alt="${modalData.priority}" class="w-9">
+                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${modalData.priority}</button>
+                    </div>
+
+                    <h1 class="text-xl font-medium my-4">${modalData.title}</h1>
+                    <p class="text-sm text-[#64748b]">${modalData.description}</p>
+
+                    <div class="flex w-full my-4">
+                        <button class="btn btn-soft btn-secondary rounded-2xl w-[48%]">${modalData.labels[0]}</button>
+                        <button class="btn btn-soft btn-warning rounded-2xl object-cover p-[-14px] ${hideBtn}"> ${modalData.labels[1]}</button>
+                    </div>
+                    <hr>
+                    <div class="space-y-2 mt-4">
+                    <p>${modalData.author}</p>
+                    <p>${modalData.createdAt}</p>    
+                    </div>
+                    <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn">Close</button>
+                </form>
+            </div>
+
+                 `;    
+   
+document.getElementById('my_modal_1').showModal();
+cardContainer.appendChild(card);
+ }
+
+
+
+
+
 
 

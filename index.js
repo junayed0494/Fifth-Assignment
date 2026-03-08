@@ -1,3 +1,4 @@
+
 document.getElementById('signin-btn').addEventListener('click', function(){
      const userName = document.getElementById('username');
     const usernameValue = userName.value;
@@ -46,16 +47,20 @@ lodAllIssues();
     cardContainer.innerHTML = '';
   issues.forEach((issue) => { 
     const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";        
-        const hideBtn = showBtn ? "" : "display-hide";
+        const hideBtn = showBtn ? "" : "";
+        
         const colorPriority = {
             "high": "bg-c",
             "medium": "bg-b",
-            "low": "bg-a", };
+            "low": "bg-a",
+        };
+
        const imagePriority = {
         "high": "./assets/Open-Status.png",
         "medium": "./assets/Open-Status.png",
          "low": "./assets/Closed- Status .png",
        } ;
+
        const cardBorder = {
         "high": "border-a",
         "medium": "border-b",
@@ -64,20 +69,21 @@ lodAllIssues();
         const bgColor = colorPriority[issue.priority] ;
         const image = imagePriority[issue.priority];
         const borderColor = cardBorder[issue.priority]; 
+
    const card = document.createElement('div');
    card.className = `card bg-base-100 shadow-sm p-6 space-y-4  ${borderColor}`;
    card.innerHTML = `
                     <div class="flex justify-between" onclick="showModal(${issue.id})">
                        <img src="${image}" alt="${issue.priority}">
-                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
+                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority.toUpperCase()}</button>
                     </div>
 
                     <h1 class="text-xl font-medium">${issue.title}</h1>
                     <p class="text-sm text-[#64748b]">${issue.description}</p>
 
                     <div class="flex w-full ">
-                        <button class="btn btn-soft btn-secondary rounded-2xl w-[48%]">${issue.labels[0]}</button>
-                        <button class="btn btn-soft btn-warning rounded-2xl object-cover p-[-14px] ${hideBtn}"> ${issue.labels[1]}</button>
+                        <button class="label-btn rounded-2xl">${issue.labels[0]}</button>
+                        <button class="label-btn1 rounded-2xl  ${hideBtn}"> ${issue.labels[1]}</button>
                     </div>
                     <hr>
                     <div class="space-y-2">
@@ -158,7 +164,7 @@ function closedSection(closedIssues){
    
 
 const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";        
-        const hideBtn = showBtn ? "" : "display-hide";
+        const hideBtn = showBtn ? "" : "";
 
         const colorPriority = {
             "high": "bg-c",
@@ -188,15 +194,15 @@ const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";
      createCard.innerHTML = `
                      <div class="flex justify-between" onclick="showModal(${issue.id})">
                        <img src="${image}" alt="${issue.priority}">
-                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
+                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority.toUpperCase()}</button>
                     </div>
 
                     <h1 class="text-xl font-medium">${issue.title}</h1>
                     <p class="text-sm text-[#64748b]">${issue.description}</p>
 
                     <div class="flex ">
-                        <button class="btn btn-soft btn-secondary rounded-2xl w-[48%]">${issue.labels[0]}</button>
-                        <button class="btn btn-soft btn-warning rounded-2xl object-cover p-[-14px] ${hideBtn}"> ${issue.labels[1]}</button>
+                        <button class="label-btn rounded-2xl w-[48%]">${issue.labels[0]}</button>
+                        <button class="label-btn1 rounded-2xl object-cover p-[-14px] ${hideBtn}"> ${issue.labels[1]}</button>
 
 
                     </div>
@@ -240,7 +246,7 @@ function openSection(openIssues){
    
 
 const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";        
-        const hideBtn = showBtn ? "" : "display-hide";
+        const hideBtn = showBtn ? "" : "";
 
         const colorPriority = {
             "high": "bg-c",
@@ -270,15 +276,15 @@ const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";
      createCard.innerHTML = `
                      <div class="flex justify-between" onclick="showModal(${issue.id})">
                        <img src="${image}" alt="${issue.priority}">
-                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
+                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority.toUpperCase()}</button>
                     </div>
 
                     <h1 class="text-xl font-medium">${issue.title}</h1>
                     <p class="text-sm text-[#64748b]">${issue.description}</p>
 
                     <div class="flex ">
-                        <button class="btn btn-soft btn-secondary rounded-2xl w-[48%]">${issue.labels[0]}</button>
-                        <button class="btn btn-soft btn-warning rounded-2xl object-cover p-[-14px] ${hideBtn}"> ${issue.labels[1] || "No Action"}</button>
+                        <button class="label-btn rounded-2xl w-[48%]">${issue.labels[0]}</button>
+                        <button class="label-btn1 rounded-2xl object-cover p-[-14px] ${hideBtn}"> ${issue.labels[1] || "No Action"}</button>
 
 
                     </div>
@@ -311,7 +317,7 @@ const displayModal = (modalData) => { console.log(modalData);
     cardContainer.innerHTML = '';
  
     const showBtn = modalData.labels[1] && modalData.labels[1].trim() !== "";        
-        const hideBtn = showBtn ? "" : "display-hide";
+        const hideBtn = showBtn ? "" : "";
         const colorPriority = {
             "high": "bg-c",
             "medium": "bg-b",
@@ -329,6 +335,7 @@ const displayModal = (modalData) => { console.log(modalData);
         const bgColor = colorPriority[modalData.priority] ;
         const image = imagePriority[modalData.priority];
         const borderColor = cardBorder[modalData.priority]; 
+
         cardContainer.classList = `card bg-base-100 w-96 shadow-sm p-6 space-y-4 ${borderColor}`;
     
 
@@ -336,15 +343,15 @@ const displayModal = (modalData) => { console.log(modalData);
    card.innerHTML = `
                     <div class="flex justify-between">
                        <img src="${image}" alt="${modalData.priority}" class="w-9">
-                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${modalData.priority}</button>
+                       <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${modalData.priority.toUpperCase()}</button>
                     </div>
 
                     <h1 class="text-xl font-medium my-4">${modalData.title}</h1>
                     <p class="text-sm text-[#64748b]">${modalData.description}</p>
 
                     <div class="flex w-full my-4">
-                        <button class="btn btn-soft btn-secondary rounded-2xl w-[48%]">${modalData.labels[0]}</button>
-                        <button class="btn btn-soft btn-warning rounded-2xl object-cover p-[-14px] ${hideBtn}"> ${modalData.labels[1]}</button>
+                        <button class="btn btn-soft btn-secondary rounded-2xl modal-btn">${modalData.labels[0]}</button>
+                        <button class="btn btn-soft btn-warning rounded-2xl object-cover modal-btn ${hideBtn}"> ${modalData.labels[1]}</button>
                     </div>
                     <hr>
                     <div class="space-y-2 mt-4">
@@ -362,7 +369,6 @@ const displayModal = (modalData) => { console.log(modalData);
 document.getElementById('my_modal_1').showModal();
 cardContainer.appendChild(card);
  }
-
 
 
 

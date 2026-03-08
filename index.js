@@ -40,59 +40,50 @@ lodAllIssues();
 
 
 
- const displayAllIssues = (issues) => {
-    
+ const displayAllIssues = (issues) => {    console.log(issues);
+ 
     const cardContainer = document.getElementById('card-container');
     cardContainer.innerHTML = '';
-
   issues.forEach((issue) => { 
-
     const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";        
         const hideBtn = showBtn ? "" : "display-hide";
-
         const colorPriority = {
             "high": "bg-c",
             "medium": "bg-b",
-            "low": "bg-a",
-        };
-
+            "low": "bg-a", };
        const imagePriority = {
         "high": "./assets/Open-Status.png",
         "medium": "./assets/Open-Status.png",
          "low": "./assets/Closed- Status .png",
        } ;
-
        const cardBorder = {
         "high": "border-a",
         "medium": "border-b",
          "low": "border-c",
        }
-
         const bgColor = colorPriority[issue.priority] ;
         const image = imagePriority[issue.priority];
-        const borderColor = cardBorder[issue.priority];         
-
-
+        const borderColor = cardBorder[issue.priority]; 
    const card = document.createElement('div');
-   card.className = `card bg-base-100 shadow-sm p-6 ${borderColor}`;
+   card.className = `card bg-base-100 shadow-sm p-6 space-y-4  ${borderColor}`;
    card.innerHTML = `
                     <div class="flex justify-between">
                        <img src="${image}" alt="${issue.priority}">
                        <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
                     </div>
 
-                    <h1>${issue.title}</h1>
-                    <p>${issue.description}</p>
+                    <h1 class="text-xl font-medium">${issue.title}</h1>
+                    <p class="text-sm text-[#64748b]">${issue.description}</p>
 
-                    <div class="flex ">
-                        <button class="btn btn-soft btn-secondary rounded-2xl">${issue.labels[0]}</button>
-                        <button class="btn btn-soft btn-warning rounded-2xl object-cover ${hideBtn}"> ${issue.labels[1] || "No Action"}</button>
-
-
+                    <div class="flex w-full ">
+                        <button class="btn btn-soft btn-secondary rounded-2xl w-[48%]">${issue.labels[0]}</button>
+                        <button class="btn btn-soft btn-warning rounded-2xl object-cover p-[-14px] ${hideBtn}"> ${issue.labels[1]}</button>
                     </div>
                     <hr>
-                    <p>#1 By John_doe</p>
-                    <p>1/15/2025</p>    
+                    <div class="space-y-2">
+                    <p>${issue.author}</p>
+                    <p>${issue.createdAt}</p>    
+                    </div>
                  `;    
    
       cardContainer.appendChild(card);
@@ -114,7 +105,9 @@ document.getElementById('all-btn').addEventListener('click', function(){
     allBtn.classList.add('btn-primary'); 
     openBtn.classList.remove('bg-btn');   
     closedBtn.classList.remove('bg-btn');    
-   cardSection.classList.remove('hidden'); 
+   cardSection.classList.remove('hidden');
+   closedCardSection.classList.add('hidden');    
+   openCardSection.classList.add('hidden'); 
 })
 
 document.getElementById('open-btn').addEventListener('click', function(){    
@@ -123,6 +116,7 @@ document.getElementById('open-btn').addEventListener('click', function(){
    closedBtn.classList.remove('bg-btn'); 
    cardSection.classList.add('hidden');
    openCardSection.classList.remove('hidden');
+   closedCardSection.classList.add('hidden'); 
 })
 
 document.getElementById('closed-btn').addEventListener('click', function(){    
@@ -130,13 +124,16 @@ document.getElementById('closed-btn').addEventListener('click', function(){
     allBtn.classList.remove('btn-primary'); 
     openBtn.classList.remove('bg-btn');     
    cardSection.classList.add('hidden');
-   closedCardSection.classList.remove('hidden');
+   closedCardSection.classList.remove('hidden');   
+   openCardSection.classList.add('hidden');
 
 });
 
 
 
 //-----------------------------------------------------------------------------
+const closedIssue = document.getElementById('closed-issue');
+
 
 const lodIssues = () => {
 fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
@@ -148,15 +145,16 @@ fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
 lodIssues();
 
 
-function closedSection(closedIssues){ console.log(closedIssues);
+function closedSection(closedIssues){ 
 
     const issues = closedIssues.filter(issue => issue.priority === 'low');
-    console.log(issues);
+    
     
    const closedCard = document.getElementById('closed-card');
    closedCard.innerText = '';
 
    issues.forEach(issue => {
+   
 
 const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";        
         const hideBtn = showBtn ? "" : "display-hide";
@@ -177,7 +175,7 @@ const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";
         "high": "border-a",
         "medium": "border-b",
          "low": "border-c",
-       }
+       };
 
         const bgColor = colorPriority[issue.priority] ;
         const image = imagePriority[issue.priority];
@@ -185,28 +183,31 @@ const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";
 
 
     const createCard = document.createElement('div');
-     createCard.className = 'card bg-base-100 shadow-sm p-6';
+     createCard.className = `card bg-base-100 shadow-sm p-6 space-y-4 ${borderColor}`;
      createCard.innerHTML = `
-                     <div class="flex justify-between">
+                     <div class="flex justify-between" onclick="lodLabelWord(${issue.id})">
                        <img src="${image}" alt="${issue.priority}">
                        <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
                     </div>
 
-                    <h1>${issue.title}</h1>
-                    <p>${issue.description}</p>
+                    <h1 class="text-xl font-medium">${issue.title}</h1>
+                    <p class="text-sm text-[#64748b]">${issue.description}</p>
 
                     <div class="flex ">
-                        <button class="btn btn-soft btn-secondary rounded-2xl">${issue.labels[0]}</button>
-                        <button class="btn btn-soft btn-warning rounded-2xl object-cover ${hideBtn}"> ${issue.labels[1] || "No Action"}</button>
+                        <button class="btn btn-soft btn-secondary rounded-2xl w-[48%]">${issue.labels[0]}</button>
+                        <button class="btn btn-soft btn-warning rounded-2xl object-cover p-[-14px] ${hideBtn}"> ${issue.labels[1]}</button>
 
 
                     </div>
                     <hr>
-                    <p>#1 By John_doe</p>
-                    <p>1/15/2025</p> 
+                    <div class="space-y-2">
+                    <p>${issue.author}</p>
+                    <p>${issue.createdAt}</p>    
+                    </div>
      `;
 
      closedCard.appendChild(createCard);
+     closedIssue.innerText = issues.length;
 
    });
 }
@@ -214,7 +215,7 @@ const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";
 
 
 //-----------------------------------------------------
-
+const openIssue = document.getElementById('open-issue');
 
 const lodOpenIssues = () => {
 fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
@@ -226,15 +227,16 @@ fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
 lodOpenIssues();
 
 
-function openSection(openIssues){ console.log(openIssues);
+function openSection(openIssues){
 
     const issues = openIssues.filter(issue => issue.priority === 'medium' || issue.priority === 'high');
-    console.log(issues);
+    //console.log(issues);
     
    const openCard = document.getElementById('open-card');
    openCard.innerText = '';
 
-   issues.forEach(issue => {
+   issues.forEach(issue => {console.log(issue.id);
+   
 
 const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";        
         const hideBtn = showBtn ? "" : "display-hide";
@@ -255,7 +257,7 @@ const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";
         "high": "border-a",
         "medium": "border-b",
          "low": "border-c",
-       }
+       };
 
         const bgColor = colorPriority[issue.priority] ;
         const image = imagePriority[issue.priority];
@@ -263,28 +265,33 @@ const showBtn = issue.labels[1] && issue.labels[1].trim() !== "";
 
 
     const createCard = document.createElement('div');
-     createCard.className = 'card bg-base-100 shadow-sm p-6';
+     createCard.className = `card bg-base-100 shadow-sm p-6 space-y-4 ${borderColor}`;
      createCard.innerHTML = `
-                     <div class="flex justify-between">
+                     <div class="flex justify-between" showModal(${openIssues.id})>
                        <img src="${image}" alt="${issue.priority}">
                        <button class="btn btn-soft btn-secondary rounded-2xl ${bgColor}">${issue.priority}</button>
                     </div>
 
-                    <h1>${issue.title}</h1>
-                    <p>${issue.description}</p>
+                    <h1 class="text-xl font-medium">${issue.title}</h1>
+                    <p class="text-sm text-[#64748b]">${issue.description}</p>
 
                     <div class="flex ">
-                        <button class="btn btn-soft btn-secondary rounded-2xl">${issue.labels[0]}</button>
-                        <button class="btn btn-soft btn-warning rounded-2xl object-cover ${hideBtn}"> ${issue.labels[1] || "No Action"}</button>
+                        <button class="btn btn-soft btn-secondary rounded-2xl w-[48%]">${issue.labels[0]}</button>
+                        <button class="btn btn-soft btn-warning rounded-2xl object-cover p-[-14px] ${hideBtn}"> ${issue.labels[1] || "No Action"}</button>
 
 
                     </div>
                     <hr>
-                    <p>#1 By John_doe</p>
-                    <p>1/15/2025</p> 
+                     <div class="space-y-2">
+                    <p>${issue.author}</p>
+                    <p>${issue.createdAt}</p>    
+                    </div>
      `;
 
      openCard.appendChild(createCard);
+     openIssue.innerText = issues.length;
 
    });
 }
+
+
